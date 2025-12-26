@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的2026跨年倒计时</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 100px;
+        }
+
+        .time-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .time-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .message {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .celebration {
+            display: none;
+            animation: celebrate 2s ease infinite;
+        }
+
+        @keyframes celebrate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .time-number {
+                font-size: 2rem;
+            }
+
+            .time-box {
+                min-width: 80px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 我的2026跨年倒计时 🎉</h1>
+        
+        <div class="countdown" id="countdown">
+            <div class="time-box">
+                <div class="time-number" id="days">00</div>
+                <div class="time-label">天</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="hours">00</div>
+                <div class="time-label">时</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="minutes">00</div>
+                <div class="time-label">分</div>
+            </div>
+            <div class="time-box">
+                <div class="time-number" id="seconds">00</div>
+                <div class="time-label">秒</div>
+            </div>
+        </div>
+
+        <div class="message" id="normal-message">
+            愿新的一年，平安喜乐，万事顺遂 ✨
+        </div>
+
+        <div class="message celebration" id="celebration-message">
+            <h2>🎊🎊🎊 新年快乐！2026年元旦快乐！🎊🎊🎊</h2>
+            <p>愿你新的一年：平安喜乐，万事顺遂！</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        专属我的2026跨年倒计时 | 祝你新年快乐
+    </div>
+
+    <script>
+        // 设置目标时间：2026年1月1日 00:00:00
+        const targetDate = new Date(2026, 0, 1, 0, 0, 0);
+
+        // 获取DOM元素
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const countdownEl = document.getElementById('countdown');
+        const normalMessageEl = document.getElementById('normal-message');
+        const celebrationMessageEl = document.getElementById('celebration-message');
+
+        // 补零函数
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        // 更新倒计时
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            // 如果时间已到
+            if (diff <= 0) {
+                countdownEl.style.display = 'none';
+                normalMessageEl.style.display = 'none';
+                celebrationMessageEl.style.display = 'block';
+                return;
+            }
+
+            // 计算天、时、分、秒
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // 更新页面显示
+            daysEl.textContent = padZero(days);
+            hoursEl.textContent = padZero(hours);
+            minutesEl.textContent = padZero(minutes);
+            secondsEl.textContent = padZero(seconds);
+        }
+
+        // 初始化并每秒更新一次
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
